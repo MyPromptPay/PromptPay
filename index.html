@@ -1,76 +1,68 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PromptPay - Digital Services</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      background: #f3f6fb;
-      color: #172554;
-    }
-    header {
-      background: #123c75;
-      color: white;
-      padding: 25px 15px;
-      text-align: center;
-    }
-    main {
-      max-width: 600px;
-      margin: 25px auto;
-      padding: 20px;
-    }
-    .service {
-      background: white;
-      margin: 12px 0;
-      padding: 18px;
-      border-radius: 10px;
-      box-shadow: 0 2px 8px #00000010;
-    }
-    button {
-      background: #087f5b;
-      color: white;
-      border: 0;
-      padding: 12px 18px;
-      border-radius: 6px;
-      font-size: 16px;
-    }
-    footer {
-      text-align: center;
-      padding: 20px;
-      color: #64748b;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PromptPay Dashboard</title>
+<style>
+body{font-family:Arial,sans-serif;background:#f1f5f9;margin:0;color:#172554}
+header{background:#123c75;color:white;padding:22px;text-align:center}
+main{max-width:600px;margin:20px auto;padding:16px}
+.card{background:white;padding:20px;border-radius:12px;box-shadow:0 2px 8px #0001}
+label{display:block;margin-top:15px;font-weight:bold}
+input,textarea{box-sizing:border-box;width:100%;padding:12px;margin-top:7px;border:1px solid #cbd5e1;border-radius:7px;font-size:16px}
+button{width:100%;padding:13px;margin-top:18px;background:#087f5b;color:white;border:0;border-radius:7px;font-size:16px}
+.note{background:#fff4d6;padding:12px;border-radius:7px;margin-top:15px;font-size:14px}
+</style>
 </head>
 <body>
-  <header>
-    <h1>Welcome to PromptPay</h1>
-    <p>Your Digital Services Platform</p>
-  </header>
-  <main>
-    <h2>Our Services</h2>
-    <div class="service">
-      <h3>AI Prompts</h3>
-      <p>Useful prompts for your everyday tasks.</p>
-    </div>
-    <div class="service">
-      <h3>CV and Document Writing</h3>
-      <p>Get help preparing professional documents.</p>
-    </div>
-    <div class="service">
-      <h3>Corporate Communications</h3>
-      <p>Press releases, reports, emails and PR content.</p>
-    </div>
-    <div class="service">
-      <h3>Social Media Content</h3>
-      <p>Creative captions and content for your pages.</p>
-    </div>
-    <p>Contact us to request a service and receive a price.</p>
-    <p><strong>Payments:</strong> M-Pesa integration coming soon.</p>
-  </main>
-  <footer>© 2026 PromptPay</footer>
+<header>
+<h1>PromptPay</h1>
+<p>Your Personal Prompt-Selling Dashboard</p>
+</header>
+<main>
+<div class="card">
+<h2>New Customer Order</h2>
+<label for="phone">Customer M-Pesa Phone Number</label>
+<input id="phone" type="tel" placeholder="e.g. 07XXXXXXXX">
+<label for="amount">Amount (KSh)</label>
+<input id="amount" type="number" min="1" placeholder="Enter amount">
+<label for="prompt">Prompt to Sell</label>
+<textarea id="prompt" rows="6" placeholder="Write or paste your prompt here"></textarea>
+<button onclick="saveOrder()">Save Order</button>
+<div id="result"></div>
+<div class="note">Payment requests are not connected yet. Saving an order does not charge the customer or confirm payment.</div>
+</div>
+<div class="card" style="margin-top:20px">
+<h2>Current Order</h2>
+<div id="order">No order saved yet.</div>
+<button onclick="copyPrompt()">Copy Prompt</button>
+</div>
+</main>
+<script>
+let currentPrompt = "";
+function saveOrder(){
+const phone=document.getElementById("phone").value.trim();
+const amount=Number(document.getElementById("amount").value);
+const prompt=document.getElementById("prompt").value.trim();
+if(!phone||!amount||amount<1||!prompt){
+document.getElementById("result").textContent="Please enter the phone number, a valid amount, and the prompt.";
+return;
+}
+currentPrompt=prompt;
+document.getElementById("result").textContent="Order saved on this page. No payment has been requested.";
+document.getElementById("order").textContent="Phone: "+phone+" | Amount: KSh "+amount+" | Status: Awaiting payment setup.";
+}
+function copyPrompt(){
+if(!currentPrompt){alert("Save an order first.");return;}
+const box=document.createElement("textarea");
+box.value=currentPrompt;
+document.body.appendChild(box);
+box.select();
+try{document.execCommand("copy");alert("Prompt copied. Only send it after you verify payment.");}
+catch(e){alert("Please select and copy the prompt manually.");}
+box.remove();
+}
+</script>
 </body>
 </html>
